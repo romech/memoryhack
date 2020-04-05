@@ -87,13 +87,21 @@
             <div class="mdl-card mdl-cell mdl-cell--6-col">
               <div class="mdl-card__supporting-text">
                 <h4>Загрузить фото</h4>
-                <div id="upload_pbar" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="visibility: collapse"></div>
                 <br>
+                <div id="upload_pbar" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="visibility: collapse"></div>
                 <form action="https://deoldify-a53b371c.localhost.run/deoldify" method="post" id="upload_form">
+                  <table>
+                    <tr>
+                      <td>Ссылка или файл:</td>
+                      <td><input type="file" name="image" id="img_upload_input"></td>
+                    </tr>
+                  </table>
+                  <br>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" name="source_url" type="text" id="sample3" value="https://roadheroes.storage.yandexcloud.net/604dcd82b491c98b9ceaea5a2ed82c0c_origin.jpg">
-                    <label class="mdl-textfield__label" for="sample3">Ссылка</label>
+                    <input class="mdl-textfield__input" name="source_url" type="text" id="src_url_input" value="https://roadheroes.storage.yandexcloud.net/604dcd82b491c98b9ceaea5a2ed82c0c_origin.jpg">
+                    <label class="mdl-textfield__label" for="src_url_input">Ссылка</label>
                   </div>
+
                   <br>
                   <table>
                     <tr>
@@ -156,7 +164,15 @@
                 <div id="spinner1" class="mdl-spinner mdl-js-spinner is-active"></div>
               </div>
             </div>
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+              <div class="mdl-card__supporting-text" style="text-align: center;">
+                <h4>В движении</h4>
+                <div id="result2" class="result_div"></div>
+                <div id="spinner2" class="mdl-spinner mdl-js-spinner is-active"></div>
+              </div>
+            </div>
           </section>
+
         </div>
 
         <div class="mdl-layout__tab-panel" id="about">
@@ -250,7 +266,11 @@
       $("#upload_form").submit(function( event ) {
         event.preventDefault();
         form_to_loading_state(true);
-        set_image(0, $( "input" ).first().val());
+        let source_url = $( "#src_url_input" ).val();
+        let img_src = source_url !== ""
+                ? source_url
+                : window.URL.createObjectURL($('#img_upload_input')[0].files[0]);
+        set_image(0, img_src);
         var post_url = $(this).attr("action");
         var request_method = $(this).attr("method");
         var form_data = new FormData(this);
@@ -278,6 +298,7 @@
           form_to_loading_state(false);
         });
       });
+      $('#img_upload_input').on("change", function(){ $("#src_url_input").val("") });
     </script>
   </body>
 </html>
