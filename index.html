@@ -89,7 +89,7 @@
                 <h4>Загрузить фото</h4>
                 <br>
                 <div id="upload_pbar" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="visibility: collapse"></div>
-                <form action="https://deoldify-a53b371c.localhost.run/deoldify" method="post" id="upload_form">
+                <form action="https://deoldify-044f6348.localhost.run/deoldify" method="post" id="upload_form">
                   <table>
                     <tr>
                       <td>Ссылка или файл:</td>
@@ -290,6 +290,20 @@
           var url = window.URL || window.webkitURL;
           var src = url.createObjectURL(data);
           set_image(1, src);
+          $.ajax({
+            url : post_url.replace(".run/deoldify", ".run/reenact"),
+            type: request_method,
+            xhrFields:{ responseType: 'blob' },
+            headers: { 'Access-Control-Allow-Origin': '*' },
+            data : form_data,
+            contentType: false,
+            cache: false,
+            crossDomain: true,
+            processData:false
+          }).done(function (data) {
+            console.log(data);
+            set_image(2, data);
+          });
           form_to_loading_state(false);
         }).fail(function (jqXHR, exception){
           var snackbarContainer = document.querySelector('#toast-container');
