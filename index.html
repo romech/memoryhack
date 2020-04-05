@@ -313,6 +313,7 @@
           var src = url.createObjectURL(data);
           set_image(1, src);
           form_data.set("image", blobData, "colored.jpg");
+          form_data.set("face_num", "1");
           $.ajax({
             // url : "https://914ba50b.ngrok.io/reenact",
             url : post_url.replace(".run/deoldify", ".run/reenact"),
